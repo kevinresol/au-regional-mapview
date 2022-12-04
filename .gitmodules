@@ -1,0 +1,3 @@
+[submodule "bin/data"]
+	path = bin/data
+	url = git@github.com:tonywr71/GeoJson-Data.git
