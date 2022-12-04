@@ -33,9 +33,6 @@ jobs:
     - name: Install Lix
       uses: lix-pm/setup-lix@master
 
-    - name: Install Haxe
-      run: lix install haxe ${{ matrix.haxe-version }}
-
     - name: Install Haxe Libraries
       run: lix download
 
