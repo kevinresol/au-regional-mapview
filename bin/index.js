@@ -126,18 +126,42 @@ window.initGoogleMap = async function () {
 		zoom: 8,
 		center: { lat: -33.62, lng: 150.71 },
 	});
+
+	const legend = document.createElement("div");
+	legend.style.border = "solid 1px grey";
+	legend.style.backgroundColor = "white";
+	legend.style.padding = "12px";
+	legend.style.margin = "12px";
+	legend.innerHTML = '<strong style="display:block;margin-bottom:8px">Designated regional areas</strong>';
+
+	for ([title, bgcolor, color] of [
+		["Non-regional", "grey", "white"],
+		["Category 2", "blue", "white"],
+		["Category 3", "red", "white"],
+		// ['N/A', 'yellow', 'black']
+	]) {
+		const container = document.createElement("div");
+		container.style.padding = "8px";
+		container.style.color = color;
+		container.style.border = `solid 1px ${bgcolor}`;
+		container.style.backgroundColor = bgcolor;
+
+		const span = document.createElement("span");
+		span.innerText = title;
+		container.appendChild(span);
+
+		// const checkbox = document.createElement("input");
+		// checkbox.type = "checkbox";
+		// checkbox.onchange = function (e) {
+		// 	console.log(e.target.checked);
+		// };
+		// container.appendChild(checkbox);
+
+		legend.appendChild(container);
+	}
 	
-	const legend = document.createElement('div');
-	legend.style.border = 'solid 1px grey';
-	legend.style.backgroundColor = 'white';
-	legend.style.padding = '12px';
-	legend.style.margin = '12px';
-	legend.innerHTML = `
-		<h3>Legend</h3>
-		<div><div style="padding: 8px; color: white; border:solid 1px red;background-color:red">Category 2</div></div>
-		<div><div style="padding: 8px; color: white; border:solid 1px blue;background-color:blue">Category 3</div></div>
-		<div><div style="padding: 8px; color: black; border:solid 1px yellow;background-color:yellow">N/A</div></div>
-	`;
+	legend.innerHTML += '<div style="margin-top:8px;text-align:right"><a target="_blank" href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list/regional-postcodes">&gt;&gt; Details</a></div>'
+
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
 	const postcodes = (
@@ -151,7 +175,10 @@ window.initGoogleMap = async function () {
 
 		state[name].push({
 			postcode: parseInt(val.postcode),
-			latlng: new google.maps.LatLng(val.Lat_precise || val.lat, val.Long_precise || val.long),
+			latlng: new google.maps.LatLng(
+				val.Lat_precise || val.lat,
+				val.Long_precise || val.long
+			),
 		});
 
 		return obj;
@@ -199,9 +226,11 @@ function addState(config) {
 			}
 
 			return {
-				fillColor: "yellow",
-				strokeColor: "yellow",
-				strokeWeight: 1,
+				// fillColor: "yellow",
+				// strokeColor: "yellow",
+				// strokeWeight: 1,
+				strokeOpacity: 0,
+				fillOpacity: 0,
 			};
 		}
 
@@ -280,8 +309,8 @@ function featureToSuburb(postcodes, state, feature) {
 	try {
 		const name = featureToSuburbName(state, feature).toUpperCase();
 		const suburbs = postcodes[state][name];
-		
-		if(suburbs.length == 1) return suburbs[0];
+
+		if (suburbs.length == 1) return suburbs[0];
 
 		// find feature center
 		const latlngs = feature.getGeometry().getArray()[0].getArray();
