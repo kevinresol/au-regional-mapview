@@ -141,17 +141,17 @@ window.initGoogleMap = async function () {
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
 	const postcodes = (
-		await (await fetch("postcodes/australian-postcodes.json")).json()
+		await (await fetch("postcodes/australian_postcodes.json")).json()
 	).reduce((obj, val) => {
 		if (!obj[val.state]) obj[val.state] = {};
 		const state = obj[val.state];
-		const name = val.suburb.toUpperCase();
+		const name = val.locality.toUpperCase();
 
 		if (!state[name]) state[name] = [];
 
 		state[name].push({
 			postcode: parseInt(val.postcode),
-			latlng: new google.maps.LatLng(val.lat, val.lon),
+			latlng: new google.maps.LatLng(val.Lat_precise || val.lat, val.Long_precise || val.long),
 		});
 
 		return obj;
@@ -243,7 +243,7 @@ function addState(config) {
 					new google.maps.Marker({
 						position: suburb.latlng,
 						map,
-						label: { text: name, color: "white" },
+						label: { text: `${name} (${suburb.postcode})`, color: "white" },
 						icon: {
 							path: google.maps.SymbolPath.CIRCLE,
 							fillColor: "green",

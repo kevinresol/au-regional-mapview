@@ -1,3 +1,6 @@
 [submodule "bin/data"]
 	path = bin/geojson
 	url = git@github.com:tonywr71/GeoJson-Data.git
+[submodule "postcodes"]
+	path = bin/postcodes
+	url = git@github.com:matthewproctor/australianpostcodes.git
