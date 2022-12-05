@@ -280,6 +280,8 @@ function featureToSuburb(postcodes, state, feature) {
 	try {
 		const name = featureToSuburbName(state, feature).toUpperCase();
 		const suburbs = postcodes[state][name];
+		
+		if(suburbs.length == 1) return suburbs[0];
 
 		// find feature center
 		const latlngs = feature.getGeometry().getArray()[0].getArray();
