@@ -126,6 +126,19 @@ window.initGoogleMap = async function () {
 		zoom: 8,
 		center: { lat: -33.62, lng: 150.71 },
 	});
+	
+	const legend = document.createElement('div');
+	legend.style.border = 'solid 1px grey';
+	legend.style.backgroundColor = 'white';
+	legend.style.padding = '12px';
+	legend.style.margin = '12px';
+	legend.innerHTML = `
+		<h3>Legend</h3>
+		<div><div style="padding: 8px; color: white; border:solid 1px red;background-color:red">Category 2</div></div>
+		<div><div style="padding: 8px; color: white; border:solid 1px blue;background-color:blue">Category 3</div></div>
+		<div><div style="padding: 8px; color: black; border:solid 1px yellow;background-color:yellow">N/A</div></div>
+	`;
+	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
 	const postcodes = (
 		await (await fetch("postcodes/australian-postcodes.json")).json()
@@ -184,6 +197,12 @@ function addState(config) {
 				console.error(ex);
 				first = false;
 			}
+
+			return {
+				fillColor: "yellow",
+				strokeColor: "yellow",
+				strokeWeight: 1,
+			};
 		}
 
 		return {
