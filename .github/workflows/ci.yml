@@ -13,21 +13,6 @@ jobs:
       with:
         submodules: 'true'
 
-    - name: Cache Haxe
-      uses: actions/cache@v3
-      with:
-        path: ~/haxe
-        key: ${{ runner.os }}-haxe
-
-    - name: Install Lix
-      uses: lix-pm/setup-lix@master
-
-    - name: Install Haxe Libraries
-      run: lix download
-
-    - name: Build
-      run: haxe build.hxml
-
     - name: Upload GitHub Pages artifact
       uses: actions/upload-pages-artifact@v1.0.5
       with:
